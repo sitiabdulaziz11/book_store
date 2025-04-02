@@ -12,15 +12,16 @@ class Book(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     author = models.CharField(null=True, max_length=100)
     is_bestselling = models.BooleanField(default=True)
-    slug = models.SlugField(default="", null=False)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
+    slug = models.SlugField(default="", null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
     
     def get_absolute_url(self):
         """To get url
         """
-        return reverse("book-detail", args=[self.id])
+        # return reverse("book-detail", args=[self.id])
+        return reverse("book-detail", args=[self.slug])
     
     def save(self, *args, **kwargs):
-        """user defined ssave method.
+        """user defined save method.
         """
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
