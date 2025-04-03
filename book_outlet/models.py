@@ -12,7 +12,8 @@ class Book(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     author = models.CharField(null=True, max_length=100)
     is_bestselling = models.BooleanField(default=True)
-    slug = models.SlugField(default="", null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
+    # slug = models.SlugField(default="", blank=True,editable=False, null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
+    slug = models.SlugField(default="", blank=True, null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
     
     def get_absolute_url(self):
         """To get url
@@ -20,11 +21,11 @@ class Book(models.Model):
         # return reverse("book-detail", args=[self.id])
         return reverse("book-detail", args=[self.slug])
     
-    def save(self, *args, **kwargs):
-        """user defined save method.
-        """
-        self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     """user defined save method.
+    #     """
+    #     self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
         
     def __str__(self):
         """ format string to Return how ever we want
