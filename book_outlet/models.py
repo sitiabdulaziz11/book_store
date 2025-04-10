@@ -4,12 +4,39 @@ from django.urls import reverse
 from django.utils.text import slugify
 # Create your models here.
 
+class Country(models.Model):
+    """ Country which the book is published.
+    """
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+    
+    def __str__(self):
+        """display format
+        """
+        return f"{self.name}"
+    
+    class Meta:
+        """To make plural
+        """
+        verbose_name_plural = "Countries"
+    
 
 class Address(models.Model):
+    """ Address model
+    """
     street = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=5)
     city = models.CharField(max_length=50)
-
+    
+    def __str__(self):
+        """To display address
+        """
+        return f"{self.street}, {self.postal_code}, {self.city}"
+    
+    class Meta:
+         """
+         """
+         verbose_name_plural = "Address Entries"
 
 class Author(models.Model):
     """Authors model.
@@ -24,7 +51,7 @@ class Author(models.Model):
         return f"{self.first_name} {self.last_name}"
     
     def __str__(self):
-        return self.full_name
+        return self.full_name()
     
 class Book(models.Model):
     """
@@ -37,6 +64,7 @@ class Book(models.Model):
     is_bestselling = models.BooleanField(default=True)
     # slug = models.SlugField(default="", blank=True,editable=False, null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
     slug = models.SlugField(default="", blank=True, null=False, db_index=True)  # if the title is Harry Potter 1 => the slug could be like this harry-potter-1
+    published_country = models.ManyToManyField(Country)
     
     def get_absolute_url(self):
         """To get url
