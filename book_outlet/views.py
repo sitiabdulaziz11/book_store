@@ -37,4 +37,3 @@ def book_detail(request, slug):
         "rating": book.rating,
         "is_bestseller": book.is_bestselling
     })
-    
